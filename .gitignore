@@ -1,0 +1,22 @@
+# Environment
+.env
+
+# Local tooling
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

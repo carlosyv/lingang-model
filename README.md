@@ -1,0 +1,38 @@
+# Lin-Gang Framework — MVP
+
+A dockerized, locally-runnable MVP of the Lin-Gang Global Energy Transition Gateway
+framework: country cluster assignment (Gaussian Mixture Model) and AI-driven solution
+matching (cosine similarity + policy gates + risk scoring), on seeded data for 5
+countries and 8 clean-energy solutions.
+
+See [docs/architecture.md](docs/architecture.md) for what's in scope vs. deferred.
+
+## Quickstart
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+- Backend API: http://localhost:8000 (docs at `/docs`)
+- Frontend dashboard: http://localhost:5173
+
+The backend seeds Postgres automatically on first boot.
+
+## Project layout
+
+```
+backend/     FastAPI service — clustering & matching engine
+frontend/    React + Vite dashboard
+database/    Postgres schema + seed loader
+datasets/    Seed fixtures (countries, solutions)
+docs/        Architecture, data model, API reference
+```
+
+## Running backend tests
+
+```bash
+cd backend
+pip install -r requirements.txt
+PYTHONPATH=. pytest
+```
