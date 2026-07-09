@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCountries, getCountryMatches } from "./api.js";
 import PipelineDiagram from "./PipelineDiagram.jsx";
+import ParameterProfile from "./ParameterProfile.jsx";
 
 const CLUSTER_LABELS = {
   A: "Export-Stabilization",
@@ -134,6 +135,7 @@ export default function App() {
                     ))}
                 </div>
               )}
+              <ParameterProfile parameters={selectedCountry.parameters} />
             </section>
           )}
 
