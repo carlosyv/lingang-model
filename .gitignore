@@ -20,3 +20,10 @@ dist/
 # Editor
 .vscode/
 .idea/
+
+# slide
+DRAFT Lin_Gang_Framework_Presentation_013449(1).pdf
+
+# frontend
+frontend/package-lock.json
+frontend/src/PipelineDiagram.jsx
