@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCountries, getCountryMatches } from "./api.js";
+import PipelineDiagram from "./PipelineDiagram.jsx";
 
 const CLUSTER_LABELS = {
   A: "Export-Stabilization",
@@ -49,6 +50,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showExcluded, setShowExcluded] = useState(false);
+  const [showPipeline, setShowPipeline] = useState(false);
 
   useEffect(() => {
     getCountries()
@@ -76,6 +78,10 @@ export default function App() {
       <header>
         <h1>Lin-Gang Framework</h1>
         <p className="subtitle">Country cluster assignment &amp; solution matching (MVP)</p>
+        <button className="pipeline-toggle" onClick={() => setShowPipeline((v) => !v)}>
+          {showPipeline ? "Hide" : "Show"} how matching works
+        </button>
+        {showPipeline && <PipelineDiagram />}
       </header>
 
       <div className="layout">

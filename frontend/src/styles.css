@@ -218,3 +218,95 @@ header h1 {
   border-color: #4c8bf5;
   color: #e8eaed;
 }
+
+.pipeline-toggle {
+  margin-top: 8px;
+  background: none;
+  border: 1px solid #2a2e35;
+  color: #9aa0a6;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.pipeline-toggle:hover {
+  border-color: #4c8bf5;
+  color: #e8eaed;
+}
+
+.pipeline-diagram {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #2a2e35;
+  border-radius: 10px;
+  background: #12151b;
+}
+
+.pipeline-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.pipeline-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.pipeline-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #2a2e35;
+  background: #171a20;
+}
+
+.pipeline-layer {
+  border-color: #2c3f66;
+  background: #161c2b;
+}
+
+.pipeline-output {
+  max-width: 220px;
+}
+
+.pipeline-tag {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #7aa6ff;
+}
+
+.pipeline-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8eaed;
+}
+
+.pipeline-sub {
+  font-size: 11px;
+  color: #9aa0a6;
+}
+
+.pipeline-arrow-down {
+  text-align: center;
+  color: #4c8bf5;
+  margin: 10px 0;
+}
+
+.pipeline-footnote {
+  margin: 14px 0 0;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.pipeline-footnote code {
+  color: #9aa0a6;
+}
