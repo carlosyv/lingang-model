@@ -7,6 +7,7 @@ class CountryOut(BaseModel):
     id: int
     name: str
     iso_code: str
+    region: str | None
     parameters: dict[str, float] | None
     cluster_label: str | None
     cluster_probabilities: dict[str, float] | None

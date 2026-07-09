@@ -74,6 +74,16 @@ export default function App() {
 
   const selectedCountry = countries.find((c) => c.id === selectedId);
 
+  const countriesByRegion = countries.reduce((groups, c) => {
+    const region = c.region || "Other";
+    (groups[region] ||= []).push(c);
+    return groups;
+  }, {});
+  const sortedRegions = Object.keys(countriesByRegion).sort((a, b) => a.localeCompare(b));
+  for (const region of sortedRegions) {
+    countriesByRegion[region].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   return (
     <div className="app">
       <header>
@@ -88,21 +98,26 @@ export default function App() {
       <div className="layout">
         <aside>
           <h2>Countries</h2>
-          <ul className="country-list">
-            {countries.map((c) => (
-              <li key={c.id}>
-                <button
-                  className={c.id === selectedId ? "active" : ""}
-                  onClick={() => setSelectedId(c.id)}
-                >
-                  {c.name}
-                  {c.cluster_label && (
-                    <span className={`badge cluster-${c.cluster_label}`}>{c.cluster_label}</span>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {sortedRegions.map((region) => (
+            <div className="region-group" key={region}>
+              <h3 className="region-heading">{region}</h3>
+              <ul className="country-list">
+                {countriesByRegion[region].map((c) => (
+                  <li key={c.id}>
+                    <button
+                      className={c.id === selectedId ? "active" : ""}
+                      onClick={() => setSelectedId(c.id)}
+                    >
+                      {c.name}
+                      {c.cluster_label && (
+                        <span className={`badge cluster-${c.cluster_label}`}>{c.cluster_label}</span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </aside>
 
         <main>

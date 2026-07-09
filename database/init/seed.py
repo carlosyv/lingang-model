@@ -41,12 +41,12 @@ def seed_countries(conn) -> None:
         for c in countries:
             cur.execute(
                 """
-                INSERT INTO countries (name, iso_code, parameters)
-                VALUES (%s, %s, %s)
-                ON CONFLICT (iso_code) DO UPDATE SET parameters = EXCLUDED.parameters
+                INSERT INTO countries (name, iso_code, region, parameters)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (iso_code) DO UPDATE SET region = EXCLUDED.region, parameters = EXCLUDED.parameters
                 RETURNING id
                 """,
-                (c["name"], c["iso_code"], Json(c["parameters"])),
+                (c["name"], c["iso_code"], c.get("region"), Json(c["parameters"])),
             )
             country_id = cur.fetchone()[0]
             cur.execute(

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS countries (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     iso_code CHAR(3) NOT NULL UNIQUE,
+    region VARCHAR(50),
     parameters JSONB NOT NULL,           -- normalized S/C/I/T/E/G/X/R vector (68 keys)
     cluster_label CHAR(1),               -- A-E, set after clustering runs
     cluster_probabilities JSONB,         -- {"A": 0.75, "B": 0.15, ...}
@@ -43,3 +44,5 @@ CREATE TABLE IF NOT EXISTS matches (
 
 CREATE INDEX IF NOT EXISTS idx_matches_country ON matches(country_id);
 CREATE INDEX IF NOT EXISTS idx_matches_score ON matches(match_score DESC);
+
+ALTER TABLE countries ADD COLUMN IF NOT EXISTS region VARCHAR(50);

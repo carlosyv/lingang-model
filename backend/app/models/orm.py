@@ -11,6 +11,7 @@ class Country(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100), unique=True)
     iso_code: Mapped[str] = mapped_column(String(3), unique=True)
+    region: Mapped[str | None] = mapped_column(String(50), nullable=True)
     parameters: Mapped[dict] = mapped_column(JSONB)
     cluster_label: Mapped[str | None] = mapped_column(String(1), nullable=True)
     cluster_probabilities: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
