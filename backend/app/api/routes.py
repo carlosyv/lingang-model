@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("/countries", response_model=list[CountryOut])
 def list_countries(db: Session = Depends(get_db)):
     countries = db.execute(select(Country)).scalars().all()
-    if countries and all(c.cluster_label is None for c in countries):
+    if countries and any(c.cluster_label is None for c in countries):
         recompute_clusters(db)
         countries = db.execute(select(Country)).scalars().all()
     return countries
