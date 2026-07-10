@@ -622,3 +622,55 @@ header h1 {
   color: #9aa0a6;
   font-variant-numeric: tabular-nums;
 }
+
+.country-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.print-report-btn {
+  background: none;
+  border: 1px solid #2a2e35;
+  color: #9aa0a6;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.print-report-btn:hover {
+  border-color: #4c8bf5;
+  color: #e8eaed;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .layout {
+    display: block;
+  }
+
+  .match-grid {
+    display: block;
+  }
+
+  .match-card {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+  }
+
+  .country-detail {
+    break-after: page;
+  }
+}

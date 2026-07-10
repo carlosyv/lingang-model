@@ -48,6 +48,7 @@ export const STRINGS = {
     addCountrySubmitting: "Computing…",
     addCountryNameRequired: "Please enter a country name.",
     newTag: "NEW",
+    printReport: "Print report (PDF)",
   },
   zh: {
     appTitle: "临港人工智能平台",
@@ -95,6 +96,7 @@ export const STRINGS = {
     addCountrySubmitting: "计算中…",
     addCountryNameRequired: "请输入国家名称。",
     newTag: "新增",
+    printReport: "打印报告（PDF）",
   },
 };
 

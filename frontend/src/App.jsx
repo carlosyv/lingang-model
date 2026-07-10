@@ -70,9 +70,10 @@ function AddCountryForm({ regions, onAdded, onCancel }) {
   );
 }
 
-function MatchCard({ m, muted }) {
+function MatchCard({ m, muted, forceExpanded }) {
   const { t, gateLabels } = useLanguage();
   const [expanded, setExpanded] = useState(false);
+  const isExpanded = expanded || forceExpanded;
   return (
     <div className={`match-card ${m.viable ? "viable" : ""} ${muted ? "muted" : ""}`}>
       <div className="match-header">
@@ -117,12 +118,12 @@ function MatchCard({ m, muted }) {
       )}
       <button
         type="button"
-        className="more-info-btn"
+        className="more-info-btn no-print"
         onClick={() => setExpanded((v) => !v)}
       >
         {expanded ? t("showLess") : t("showMore")}
       </button>
-      {expanded && (
+      {isExpanded && (
         <div className="match-details">
           <dl>
             <dt>{t("matchScore")}</dt>
@@ -160,6 +161,19 @@ export default function App() {
   const [showExcluded, setShowExcluded] = useState(false);
   const [showPipeline, setShowPipeline] = useState(false);
   const [showAddCountry, setShowAddCountry] = useState(false);
+  const [printMode, setPrintMode] = useState(false);
+
+  useEffect(() => {
+    const handleAfterPrint = () => setPrintMode(false);
+    window.addEventListener("afterprint", handleAfterPrint);
+    return () => window.removeEventListener("afterprint", handleAfterPrint);
+  }, []);
+
+  useEffect(() => {
+    if (!printMode) return;
+    const id = requestAnimationFrame(() => window.print());
+    return () => cancelAnimationFrame(id);
+  }, [printMode]);
 
   useEffect(() => {
     getCountries()
@@ -209,7 +223,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <header>
+      <header className="no-print">
         <button className="language-toggle" onClick={toggleLang}>
           {t("languageToggle")}
         </button>
@@ -222,11 +236,11 @@ export default function App() {
       </header>
 
       <div className="layout">
-        <aside>
+        <aside className="no-print">
           <h2>{t("countries")}</h2>
           <button
             type="button"
-            className="add-country-toggle"
+            className="add-country-toggle no-print"
             onClick={() => setShowAddCountry((v) => !v)}
           >
             {t("addCountry")}
@@ -270,7 +284,16 @@ export default function App() {
 
           {selectedCountry && (
             <section className="country-detail">
-              <h2>{countryName(selectedCountry)}</h2>
+              <div className="country-detail-header">
+                <h2>{countryName(selectedCountry)}</h2>
+                <button
+                  type="button"
+                  className="print-report-btn no-print"
+                  onClick={() => setPrintMode(true)}
+                >
+                  {t("printReport")}
+                </button>
+              </div>
               {selectedCountry.cluster_label && (
                 <p>
                   {t("cluster")}: <strong>{selectedCountry.cluster_label}</strong> —{" "}
@@ -307,21 +330,24 @@ export default function App() {
             )}
             <div className="match-grid">
               {matches.ranked.map((m) => (
-                <MatchCard m={m} key={m.solution.id} />
+                <MatchCard m={m} key={m.solution.id} forceExpanded={printMode} />
               ))}
             </div>
           </section>
 
           {matches.excluded.length > 0 && (
             <section>
-              <button className="excluded-toggle" onClick={() => setShowExcluded((v) => !v)}>
+              <button
+                className="excluded-toggle no-print"
+                onClick={() => setShowExcluded((v) => !v)}
+              >
                 {showExcluded ? t("hideExcludedPrefix") : t("showExcludedPrefix")}{" "}
                 {matches.excluded.length} {t("excludedSuffix")}
               </button>
-              {showExcluded && (
+              {(showExcluded || printMode) && (
                 <div className="match-grid">
                   {matches.excluded.map((m) => (
-                    <MatchCard m={m} key={m.solution.id} muted />
+                    <MatchCard m={m} key={m.solution.id} muted forceExpanded={printMode} />
                   ))}
                 </div>
               )}
