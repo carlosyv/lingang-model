@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
 
 app = FastAPI(
-    title="Lin-Gang Framework MVP API",
+    title="Lin-Gang AI Power Platform MVP API",
     description="Country clustering and solution matching for the Lin-Gang Global Energy Transition Gateway.",
     version="0.1.0",
 )

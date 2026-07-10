@@ -87,7 +87,7 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Lin-Gang Framework</h1>
+        <h1>Lin-Gang AI Power Platform</h1>
         <p className="subtitle">Country cluster assignment &amp; solution matching (MVP)</p>
         <button className="pipeline-toggle" onClick={() => setShowPipeline((v) => !v)}>
           {showPipeline ? "Hide" : "Show"} how matching works
