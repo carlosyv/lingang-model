@@ -10,6 +10,7 @@ class Country(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100), unique=True)
+    name_zh: Mapped[str | None] = mapped_column(String(100), nullable=True)
     iso_code: Mapped[str] = mapped_column(String(3), unique=True)
     region: Mapped[str | None] = mapped_column(String(50), nullable=True)
     parameters: Mapped[dict] = mapped_column(JSONB)

@@ -6,6 +6,7 @@ from app.core.db import get_db
 from app.models.orm import Country, Solution
 from app.schemas.api import CountryCreate, CountryOut, MatchesResponse, SolutionOut
 from app.services.pipeline import compute_country_matches, recompute_clusters
+from app.services.translation import translate_country_name
 
 router = APIRouter()
 
@@ -56,6 +57,7 @@ def create_country(payload: CountryCreate, db: Session = Depends(get_db)):
 
     country = Country(
         name=name,
+        name_zh=translate_country_name(name),
         iso_code=_derive_iso_code(db, name),
         region=payload.region,
         parameters=_estimate_parameters(db),

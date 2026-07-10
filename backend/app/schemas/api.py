@@ -6,6 +6,7 @@ class CountryOut(BaseModel):
 
     id: int
     name: str
+    name_zh: str | None = None
     iso_code: str
     region: str | None
     parameters: dict[str, float] | None

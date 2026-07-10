@@ -182,6 +182,11 @@ export default function App() {
 
   const selectedCountry = countries.find((c) => c.id === selectedId);
 
+  // Prefer the curated seed label; fall back to the backend-translated name for
+  // manually-added countries when in Chinese, then to the raw English name.
+  const countryName = (c) =>
+    countryLabels[c.name] || (lang === "zh" && c.name_zh) || c.name;
+
   const knownRegions = Array.from(
     new Set(countries.map((c) => c.region).filter(Boolean))
   ).sort((a, b) => a.localeCompare(b));
@@ -243,7 +248,7 @@ export default function App() {
                       className={c.id === selectedId ? "active" : ""}
                       onClick={() => setSelectedId(c.id)}
                     >
-                      {countryLabels[c.name] || c.name}
+                      {countryName(c)}
                       {c.cluster_label && (
                         <span className={`badge cluster-${c.cluster_label}`}>{c.cluster_label}</span>
                       )}
@@ -265,7 +270,7 @@ export default function App() {
 
           {selectedCountry && (
             <section className="country-detail">
-              <h2>{countryLabels[selectedCountry.name] || selectedCountry.name}</h2>
+              <h2>{countryName(selectedCountry)}</h2>
               {selectedCountry.cluster_label && (
                 <p>
                   {t("cluster")}: <strong>{selectedCountry.cluster_label}</strong> —{" "}
