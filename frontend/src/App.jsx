@@ -51,7 +51,7 @@ function MatchCard({ m, muted }) {
 }
 
 export default function App() {
-  const { t, lang, toggleLang, clusterLabels } = useLanguage();
+  const { t, lang, toggleLang, clusterLabels, regionLabels, countryLabels } = useLanguage();
   const [countries, setCountries] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [matches, setMatches] = useState({ ranked: [], excluded: [] });
@@ -110,7 +110,7 @@ export default function App() {
           <h2>{t("countries")}</h2>
           {sortedRegions.map((region) => (
             <div className="region-group" key={region}>
-              <h3 className="region-heading">{region}</h3>
+              <h3 className="region-heading">{regionLabels[region] || region}</h3>
               <ul className="country-list">
                 {countriesByRegion[region].map((c) => (
                   <li key={c.id}>
@@ -118,7 +118,7 @@ export default function App() {
                       className={c.id === selectedId ? "active" : ""}
                       onClick={() => setSelectedId(c.id)}
                     >
-                      {c.name}
+                      {countryLabels[c.name] || c.name}
                       {c.cluster_label && (
                         <span className={`badge cluster-${c.cluster_label}`}>{c.cluster_label}</span>
                       )}
@@ -139,7 +139,7 @@ export default function App() {
 
           {selectedCountry && (
             <section className="country-detail">
-              <h2>{selectedCountry.name}</h2>
+              <h2>{countryLabels[selectedCountry.name] || selectedCountry.name}</h2>
               {selectedCountry.cluster_label && (
                 <p>
                   {t("cluster")}: <strong>{selectedCountry.cluster_label}</strong> —{" "}
