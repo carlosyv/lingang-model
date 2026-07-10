@@ -1,4 +1,4 @@
-# Lin-Gang AI Power Platform — MVP
+# Lin-Gang Ai-Powered Platform — MVP
 
 A dockerized, locally-runnable MVP of the Lin-Gang Global Energy Transition Gateway
 framework: country cluster assignment (Gaussian Mixture Model) and AI-driven solution
