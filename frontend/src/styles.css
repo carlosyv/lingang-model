@@ -15,8 +15,32 @@ body {
   padding: 24px;
 }
 
+header {
+  position: relative;
+}
+
 header h1 {
   margin-bottom: 4px;
+  padding-right: 60px;
+}
+
+.language-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: 1px solid #2a2e35;
+  color: #e8eaed;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.language-toggle:hover {
+  border-color: #4c8bf5;
+  color: #4c8bf5;
 }
 
 .subtitle {

@@ -2,36 +2,42 @@ import { useEffect, useState } from "react";
 import { getCountries, getCountryMatches } from "./api.js";
 import PipelineDiagram from "./PipelineDiagram.jsx";
 import ParameterProfile from "./ParameterProfile.jsx";
-
-const CLUSTER_LABELS = {
-  A: "Export-Stabilization",
-  B: "Leapfrog-Capable",
-  C: "Infrastructure-Constrained",
-  D: "Fragile/Conflict-Affected",
-  E: "Advanced Emerging",
-};
+import { useLanguage } from "./i18n.jsx";
 
 function MatchCard({ m, muted }) {
+  const { t, gateLabels } = useLanguage();
   return (
     <div className={`match-card ${m.viable ? "viable" : ""} ${muted ? "muted" : ""}`}>
       <div className="match-header">
         <h3>{m.solution.name}</h3>
-        <span className="tier">Tier {m.solution.tier}</span>
+        <span className="tier">
+          {t("tier")} {m.solution.tier}
+        </span>
       </div>
       <p className="supplier">{m.solution.supplier}</p>
       <p className="capex">
-        CAPEX: ${m.solution.capex_low_usd_m}M – ${m.solution.capex_high_usd_m}M
+        {t("capex")}: ${m.solution.capex_low_usd_m}M – ${m.solution.capex_high_usd_m}M
       </p>
       <div className="scores">
         <div>
-          Match Score: <strong>{m.match_score.toFixed(2)}</strong>
+          {t("matchScore")}: <strong>{m.match_score.toFixed(2)}</strong>
         </div>
-        <div>Cosine Sim: {m.cosine_sim.toFixed(2)}</div>
-        <div>Cluster Fit: {m.cluster_fit.toFixed(2)}</div>
-        <div>Policy: {m.policy_score.toFixed(2)}</div>
-        <div>Risk Adj: {m.risk_adj.toFixed(2)}</div>
+        <div>
+          {t("cosineSim")}: {m.cosine_sim.toFixed(2)}
+        </div>
+        <div>
+          {t("clusterFit")}: {m.cluster_fit.toFixed(2)}
+        </div>
+        <div>
+          {t("policy")}: {m.policy_score.toFixed(2)}
+        </div>
+        <div>
+          {t("riskAdj")}: {m.risk_adj.toFixed(2)}
+        </div>
       </div>
-      <div className={`gate-badge gate-${m.gate}`}>{m.gate.replace(/_/g, " ")}</div>
+      <div className={`gate-badge gate-${m.gate}`}>
+        {gateLabels[m.gate] || m.gate.replace(/_/g, " ")}
+      </div>
       {m.gate_reasons.length > 0 && (
         <ul className="gate-reasons">
           {m.gate_reasons.map((r, i) => (
@@ -39,12 +45,13 @@ function MatchCard({ m, muted }) {
           ))}
         </ul>
       )}
-      {m.viable && <span className="viable-badge">Viable</span>}
+      {m.viable && <span className="viable-badge">{t("viable")}</span>}
     </div>
   );
 }
 
 export default function App() {
+  const { t, lang, toggleLang, clusterLabels } = useLanguage();
   const [countries, setCountries] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [matches, setMatches] = useState({ ranked: [], excluded: [] });
@@ -87,17 +94,20 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Lin-Gang Ai-Powered Platform</h1>
-        <p className="subtitle">Country cluster assignment &amp; solution matching (MVP)</p>
+        <button className="language-toggle" onClick={toggleLang}>
+          {t("languageToggle")}
+        </button>
+        <h1>{t("appTitle")}</h1>
+        <p className="subtitle">{t("subtitle")}</p>
         <button className="pipeline-toggle" onClick={() => setShowPipeline((v) => !v)}>
-          {showPipeline ? "Hide" : "Show"} how matching works
+          {showPipeline ? t("hideMatching") : t("showMatching")}
         </button>
         {showPipeline && <PipelineDiagram />}
       </header>
 
       <div className="layout">
         <aside>
-          <h2>Countries</h2>
+          <h2>{t("countries")}</h2>
           {sortedRegions.map((region) => (
             <div className="region-group" key={region}>
               <h3 className="region-heading">{region}</h3>
@@ -121,15 +131,19 @@ export default function App() {
         </aside>
 
         <main>
-          {error && <p className="error">Error: {error}</p>}
+          {error && (
+            <p className="error">
+              {t("error")}: {error}
+            </p>
+          )}
 
           {selectedCountry && (
             <section className="country-detail">
               <h2>{selectedCountry.name}</h2>
               {selectedCountry.cluster_label && (
                 <p>
-                  Cluster: <strong>{selectedCountry.cluster_label}</strong> —{" "}
-                  {CLUSTER_LABELS[selectedCountry.cluster_label]}
+                  {t("cluster")}: <strong>{selectedCountry.cluster_label}</strong> —{" "}
+                  {clusterLabels[selectedCountry.cluster_label]}
                 </p>
               )}
               {selectedCountry.cluster_probabilities && (
@@ -155,10 +169,10 @@ export default function App() {
           )}
 
           <section>
-            <h2>Ranked Solution Matches</h2>
-            {loading && <p>Loading matches…</p>}
+            <h2>{t("rankedMatches")}</h2>
+            {loading && <p>{t("loadingMatches")}</p>}
             {!loading && matches.ranked.length === 0 && !error && (
-              <p>No matches computed yet.</p>
+              <p>{t("noMatches")}</p>
             )}
             <div className="match-grid">
               {matches.ranked.map((m) => (
@@ -170,8 +184,8 @@ export default function App() {
           {matches.excluded.length > 0 && (
             <section>
               <button className="excluded-toggle" onClick={() => setShowExcluded((v) => !v)}>
-                {showExcluded ? "Hide" : "Show"} {matches.excluded.length} excluded solution
-                {matches.excluded.length === 1 ? "" : "s"} (policy/supplier gate)
+                {showExcluded ? t("hideExcludedPrefix") : t("showExcludedPrefix")}{" "}
+                {matches.excluded.length} {t("excludedSuffix")}
               </button>
               {showExcluded && (
                 <div className="match-grid">

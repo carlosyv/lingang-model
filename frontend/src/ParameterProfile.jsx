@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { BLOCKS, paramsByBlock, blockAverages } from "./paramLabels.js";
+import { BLOCKS_BY_LANG, paramsByBlock, blockAverages } from "./paramLabels.js";
+import { useLanguage } from "./i18n.jsx";
 
 function RadarChart({ averages }) {
   const size = 260;
@@ -60,19 +61,17 @@ function ParamBar({ entry }) {
 
 export default function ParameterProfile({ parameters }) {
   const [openBlock, setOpenBlock] = useState(null);
+  const { lang, t } = useLanguage();
   if (!parameters) return null;
 
-  const grouped = paramsByBlock(parameters);
-  const averages = blockAverages(parameters);
+  const blocks = BLOCKS_BY_LANG[lang] || BLOCKS_BY_LANG.en;
+  const grouped = paramsByBlock(parameters, lang);
+  const averages = blockAverages(parameters, lang);
 
   return (
     <div className="parameter-profile">
-      <h3>Parameter Profile</h3>
-      <p className="param-scale-note">
-        68 parameters across 8 blocks (S/C/I/T/E/G/X/R), each normalized to a 0–1 scale
-        against the framework's reference ranges. The radar shows each block's average;
-        expand a block below to see the raw parameters behind it.
-      </p>
+      <h3>{t("parameterProfile")}</h3>
+      <p className="param-scale-note">{t("paramScaleNote")}</p>
       <div className="radar-wrap">
         <RadarChart averages={averages} />
         <ul className="radar-legend">
@@ -87,7 +86,7 @@ export default function ParameterProfile({ parameters }) {
       </div>
 
       <div className="param-accordion">
-        {BLOCKS.map((block) => {
+        {blocks.map((block) => {
           const isOpen = openBlock === block.key;
           return (
             <div className="param-block" key={block.key}>
@@ -99,7 +98,9 @@ export default function ParameterProfile({ parameters }) {
                 <span className="param-block-name">
                   {block.key} · {block.name}
                 </span>
-                <span className="param-block-count">{grouped[block.key].length} params</span>
+                <span className="param-block-count">
+                  {grouped[block.key].length} {t("paramsCount")}
+                </span>
                 <span className="param-block-toggle">{isOpen ? "−" : "+"}</span>
               </button>
               {isOpen && (
