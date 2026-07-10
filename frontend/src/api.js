@@ -15,3 +15,16 @@ export function getCountries() {
 export function getCountryMatches(countryId) {
   return request(`/countries/${countryId}/matches`);
 }
+
+export async function addCountry(name, region) {
+  const res = await fetch(`${API_BASE}/countries`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, region }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.detail || `Request to /countries failed: ${res.status}`);
+  }
+  return res.json();
+}

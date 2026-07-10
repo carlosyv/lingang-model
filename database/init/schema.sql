@@ -46,3 +46,4 @@ CREATE INDEX IF NOT EXISTS idx_matches_country ON matches(country_id);
 CREATE INDEX IF NOT EXISTS idx_matches_score ON matches(match_score DESC);
 
 ALTER TABLE countries ADD COLUMN IF NOT EXISTS region VARCHAR(50);
+ALTER TABLE countries ADD COLUMN IF NOT EXISTS is_new BOOLEAN NOT NULL DEFAULT false;

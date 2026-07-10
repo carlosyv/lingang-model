@@ -1,8 +1,74 @@
-import { useEffect, useState } from "react";
-import { getCountries, getCountryMatches } from "./api.js";
+import { useEffect, useMemo, useState } from "react";
+import { addCountry, getCountries, getCountryMatches } from "./api.js";
 import PipelineDiagram from "./PipelineDiagram.jsx";
 import ParameterProfile from "./ParameterProfile.jsx";
 import { useLanguage } from "./i18n.jsx";
+import { getWorldCountryNames } from "./worldCountries.js";
+
+function AddCountryForm({ regions, onAdded, onCancel }) {
+  const { t } = useLanguage();
+  const [name, setName] = useState("");
+  const [region, setRegion] = useState(regions[0] || "");
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
+  const suggestions = useMemo(() => getWorldCountryNames(), []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const trimmed = name.trim();
+    if (!trimmed) {
+      setFormError(t("addCountryNameRequired"));
+      return;
+    }
+    setSubmitting(true);
+    setFormError(null);
+    try {
+      const created = await addCountry(trimmed, region || null);
+      onAdded(created);
+    } catch (err) {
+      setFormError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <form className="add-country-form" onSubmit={handleSubmit}>
+      <h3>{t("addCountryTitle")}</h3>
+      <input
+        list="world-country-names"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder={t("addCountryNamePlaceholder")}
+        autoFocus
+      />
+      <datalist id="world-country-names">
+        {suggestions.map((n) => (
+          <option value={n} key={n} />
+        ))}
+      </datalist>
+      <label className="add-country-region">
+        {t("addCountryRegionLabel")}
+        <select value={region} onChange={(e) => setRegion(e.target.value)}>
+          {regions.map((r) => (
+            <option value={r} key={r}>
+              {r}
+            </option>
+          ))}
+        </select>
+      </label>
+      {formError && <p className="error">{formError}</p>}
+      <div className="add-country-actions">
+        <button type="submit" disabled={submitting}>
+          {submitting ? t("addCountrySubmitting") : t("addCountrySubmit")}
+        </button>
+        <button type="button" onClick={onCancel} disabled={submitting}>
+          {t("addCountryCancel")}
+        </button>
+      </div>
+    </form>
+  );
+}
 
 function MatchCard({ m, muted }) {
   const { t, gateLabels } = useLanguage();
@@ -93,6 +159,7 @@ export default function App() {
   const [error, setError] = useState(null);
   const [showExcluded, setShowExcluded] = useState(false);
   const [showPipeline, setShowPipeline] = useState(false);
+  const [showAddCountry, setShowAddCountry] = useState(false);
 
   useEffect(() => {
     getCountries()
@@ -114,6 +181,16 @@ export default function App() {
   }, [selectedId]);
 
   const selectedCountry = countries.find((c) => c.id === selectedId);
+
+  const knownRegions = Array.from(
+    new Set(countries.map((c) => c.region).filter(Boolean))
+  ).sort((a, b) => a.localeCompare(b));
+
+  const handleCountryAdded = (created) => {
+    setCountries((prev) => [...prev, created]);
+    setSelectedId(created.id);
+    setShowAddCountry(false);
+  };
 
   const countriesByRegion = countries.reduce((groups, c) => {
     const region = c.region || "Other";
@@ -142,6 +219,20 @@ export default function App() {
       <div className="layout">
         <aside>
           <h2>{t("countries")}</h2>
+          <button
+            type="button"
+            className="add-country-toggle"
+            onClick={() => setShowAddCountry((v) => !v)}
+          >
+            {t("addCountry")}
+          </button>
+          {showAddCountry && (
+            <AddCountryForm
+              regions={knownRegions}
+              onAdded={handleCountryAdded}
+              onCancel={() => setShowAddCountry(false)}
+            />
+          )}
           {sortedRegions.map((region) => (
             <div className="region-group" key={region}>
               <h3 className="region-heading">{regionLabels[region] || region}</h3>
@@ -156,6 +247,7 @@ export default function App() {
                       {c.cluster_label && (
                         <span className={`badge cluster-${c.cluster_label}`}>{c.cluster_label}</span>
                       )}
+                      {c.is_new && <span className="badge badge-new">{t("newTag")}</span>}
                     </button>
                   </li>
                 ))}

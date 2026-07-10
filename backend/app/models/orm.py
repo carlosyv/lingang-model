@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, Numeric, SmallInteger, String
+from sqlalchemy import Boolean, ForeignKey, Numeric, SmallInteger, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -15,6 +15,7 @@ class Country(Base):
     parameters: Mapped[dict] = mapped_column(JSONB)
     cluster_label: Mapped[str | None] = mapped_column(String(1), nullable=True)
     cluster_probabilities: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    is_new: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
 
     policy_gate = relationship("PolicyGate", back_populates="country", uselist=False)
 

@@ -108,6 +108,77 @@ header h1 {
 .cluster-D { background: #d9552b; }
 .cluster-E { background: #b02bd9; }
 
+.badge-new {
+  background: #2ec27e;
+  color: #0d1a12;
+  margin-left: 6px;
+}
+
+.add-country-toggle {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px dashed #4c8bf5;
+  background: transparent;
+  color: #4c8bf5;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.add-country-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #2a2e35;
+  background: #171a20;
+}
+
+.add-country-form h3 {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+
+.add-country-form input,
+.add-country-form select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #2a2e35;
+  background: #0f1115;
+  color: #e8eaed;
+}
+
+.add-country-region {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #8a8f98;
+}
+
+.add-country-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.add-country-actions button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #2a2e35;
+  cursor: pointer;
+}
+
+.add-country-actions button[type="submit"] {
+  background: #4c8bf5;
+  color: #0d1420;
+  font-weight: 600;
+  border-color: #4c8bf5;
+}
+
 .prob-bars {
   display: flex;
   flex-direction: column;

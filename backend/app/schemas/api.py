@@ -11,6 +11,12 @@ class CountryOut(BaseModel):
     parameters: dict[str, float] | None
     cluster_label: str | None
     cluster_probabilities: dict[str, float] | None
+    is_new: bool
+
+
+class CountryCreate(BaseModel):
+    name: str
+    region: str | None = None
 
 
 class SolutionOut(BaseModel):
