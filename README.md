@@ -80,4 +80,6 @@ Copyright © 2026 Carlos Yalta. All rights reserved.
 
 This code is proprietary. No permission is granted to use, copy, modify, or
 distribute it without prior explicit written permission from the copyright
-holder. See [LICENSE](LICENSE) for full terms.
+holder, except that free use, copying, and modification is permitted for
+non-commercial educational or academic research purposes. See
+[LICENSE](LICENSE) for full terms.
