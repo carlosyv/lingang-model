@@ -156,11 +156,19 @@ header h1 {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 8px;
 }
 
 .match-header h3 {
   margin: 0;
   font-size: 15px;
+}
+
+.match-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .tier {
@@ -188,14 +196,51 @@ header h1 {
 }
 
 .viable-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   background: #2e9e5b;
   color: white;
   font-size: 11px;
   padding: 2px 6px;
   border-radius: 999px;
+  white-space: nowrap;
+}
+
+.more-info-btn {
+  background: transparent;
+  border: 1px solid #3a3f47;
+  color: #c7c9cc;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.more-info-btn:hover {
+  background: #23262d;
+  border-color: #4a505a;
+}
+
+.match-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #2a2e35;
+  font-size: 12px;
+  color: #c7c9cc;
+}
+
+.match-details dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  margin: 0;
+}
+
+.match-details dt {
+  color: #9aa0a6;
+}
+
+.match-details dd {
+  margin: 0;
 }
 
 .error {

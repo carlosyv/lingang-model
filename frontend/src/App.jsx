@@ -6,13 +6,17 @@ import { useLanguage } from "./i18n.jsx";
 
 function MatchCard({ m, muted }) {
   const { t, gateLabels } = useLanguage();
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className={`match-card ${m.viable ? "viable" : ""} ${muted ? "muted" : ""}`}>
       <div className="match-header">
         <h3>{m.solution.name}</h3>
-        <span className="tier">
-          {t("tier")} {m.solution.tier}
-        </span>
+        <div className="match-header-right">
+          <span className="tier">
+            {t("tier")} {m.solution.tier}
+          </span>
+          {m.viable && <span className="viable-badge">{t("viable")}</span>}
+        </div>
       </div>
       <p className="supplier">{m.solution.supplier}</p>
       <p className="capex">
@@ -45,7 +49,37 @@ function MatchCard({ m, muted }) {
           ))}
         </ul>
       )}
-      {m.viable && <span className="viable-badge">{t("viable")}</span>}
+      <button
+        type="button"
+        className="more-info-btn"
+        onClick={() => setExpanded((v) => !v)}
+      >
+        {expanded ? t("showLess") : t("showMore")}
+      </button>
+      {expanded && (
+        <div className="match-details">
+          <dl>
+            <dt>{t("matchScore")}</dt>
+            <dd>{m.match_score.toFixed(3)}</dd>
+            <dt>{t("cosineSim")}</dt>
+            <dd>{m.cosine_sim.toFixed(3)}</dd>
+            <dt>{t("clusterFit")}</dt>
+            <dd>{m.cluster_fit.toFixed(3)}</dd>
+            <dt>{t("policy")}</dt>
+            <dd>{m.policy_score.toFixed(3)}</dd>
+            <dt>{t("riskAdj")}</dt>
+            <dd>{m.risk_adj.toFixed(3)}</dd>
+            <dt>{t("tier")}</dt>
+            <dd>{m.solution.tier}</dd>
+            <dt>{t("capex")}</dt>
+            <dd>
+              ${m.solution.capex_low_usd_m}M – ${m.solution.capex_high_usd_m}M
+            </dd>
+            <dt>{gateLabels[m.gate] || "Gate"}</dt>
+            <dd>{m.gate.replace(/_/g, " ")}</dd>
+          </dl>
+        </div>
+      )}
     </div>
   );
 }
