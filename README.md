@@ -36,3 +36,48 @@ cd backend
 pip install -r requirements.txt
 PYTHONPATH=. pytest
 ```
+
+## Architecture
+
+```
+┌──────────────────────┐
+│      frontend        │
+│    React + Vite      │
+│  (dashboard, :5173)  │
+└──────────┬───────────┘
+           │ REST (JSON)
+           ▼
+┌──────────────────────┐
+│       backend         │
+│   FastAPI (:8000)     │
+│ ┌───────────────────┐ │
+│ │  clustering.py    │ │  archetype scoring → softmax
+│ │  matching.py      │ │  policy/supplier gates + cosine similarity
+│ │  risk.py          │ │  composite risk score
+│ └───────────────────┘ │
+└──────────┬───────────┘
+           │ SQL
+           ▼
+┌──────────────────────┐
+│      database          │
+│  Postgres              │
+│  (schema.sql + seed)   │
+└──────────────────────┘
+           ▲
+           │ seeded from
+┌──────────────────────┐
+│      datasets           │
+│  countries.json         │
+│  solutions.json         │
+└──────────────────────┘
+```
+
+See [docs/architecture.md](docs/architecture.md) for the full data flow and design decisions.
+
+## License
+
+Copyright © 2026 Carlos Yalta. All rights reserved.
+
+This code is proprietary. No permission is granted to use, copy, modify, or
+distribute it without prior explicit written permission from the copyright
+holder. See [LICENSE](LICENSE) for full terms.
